@@ -1,30 +1,35 @@
 import Container from '../Container'
 import { AiOutlineMenu } from 'react-icons/ai'
 import { useState } from 'react'
-import { Link } from 'react-router'
+import { Link, NavLink } from 'react-router'
 import useAuth from '../../../hooks/useAuth'
 import avatarImg from '../../../assets/placeholder.jpg'
-import logo from '../../../assets/logo.jpg'
+import logo from '../../../assets/logo1.png'
 const Navbar = () => {
   const { user, logOut } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
 
   return (
     <div className='fixed w-full bg-white z-10 shadow-sm'>
-      <div className='py-4 '>
+      <div className='py-2'>
         <Container>
           <div className='flex flex-row  items-center justify-between gap-3 md:gap-0'>
             {/* Logo */}
             <Link to='/'>
-              <img src={logo} alt='logo' width='100' height='100' />
+              <img src={logo} alt='logo' width='75' height='75' />
             </Link>
+            <div>
+            <NavLink to='/'>Home</NavLink>
+            <NavLink className="mx-6" to='/contests'>Contests</NavLink>
+            <NavLink to='/contact'>Contact</NavLink>
+            </div>
             {/* Dropdown Menu */}
             <div className='relative'>
               <div className='flex flex-row items-center gap-3'>
                 {/* Dropdown btn */}
                 <div
                   onClick={() => setIsOpen(!isOpen)}
-                  className='p-4 md:py-1 md:px-2 border border-neutral-200 flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-md transition'
+                  className='p-2 md:py-1 md:px-2 border border-neutral-200 flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-md transition'
                 >
                   <AiOutlineMenu />
                   <div className='hidden md:block'>
@@ -52,6 +57,7 @@ const Navbar = () => {
 
                     {user ? (
                       <>
+                      <h2 className='mt-4 text-orange-400 px-4 py-3 hover:bg-neutral-100 transition font-semibold'>{user.displayName}</h2>
                         <Link
                           to='/dashboard'
                           className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'
