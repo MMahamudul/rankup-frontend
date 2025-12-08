@@ -4,6 +4,7 @@ import useAuth from '../../hooks/useAuth'
 import { toast } from 'react-hot-toast'
 import { TbFidgetSpinner } from 'react-icons/tb'
 import { useForm } from "react-hook-form"
+import { imageUpload, saveOrUpdateUser } from '../../utils'
 
 
 const SignUp = () => {
@@ -15,22 +16,23 @@ const SignUp = () => {
   // form submit handler
  const onSubmit = async data => {
 
-  /* const {email, password, image} = data; */
-  const {email, password} = data;
-  /* const imageFile = image[0]; */
+  const {name, email, password, image} = data;
+  
+  const imageFile = image[0];
  
     try {
 
-     /*  const imageURL = await imageUpload(imageFile ) */
+      const imageURL = await imageUpload(imageFile )
 
 
       //2. User Registration
       const result = await createUser(email, password)
+      await saveOrUpdateUser({name, email,image:imageURL})
 
       //3. Save username & profile photo
       await updateUserProfile(
         name,
-        /* imageURL */
+        imageURL
       )
       console.log(result)
 
@@ -46,7 +48,13 @@ const SignUp = () => {
   const handleGoogleSignIn = async () => {
     try {
       //User Registration using google
-      await signInWithGoogle()
+     const {user} = await signInWithGoogle()
+       await saveOrUpdateUser({
+        name: user?.displayName,
+        email: user?.email,
+        image:user?.photoURL,
+        
+    })
 
       navigate(from, { replace: true })
       toast.success('Signup Successful')
@@ -60,7 +68,7 @@ const SignUp = () => {
       <div className='flex flex-col max-w-md p-6 rounded-md sm:p-10 bg-gray-100 text-gray-900'>
         <div className='mb-8 text-center'>
           <h1 className='my-3 text-4xl font-bold'>Sign Up</h1>
-          <p className='text-sm text-gray-400'>Welcome to PlantNet</p>
+          <p className='text-sm text-gray-400'>Welcome to RankUp</p>
         </div>
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -85,7 +93,7 @@ const SignUp = () => {
               />
             </div>
             {/* Image */}
-            {/* <div>
+             <div>
               <label
                 htmlFor='image'
                 className='block mb-2 text-sm font-medium text-gray-700'
@@ -110,7 +118,7 @@ const SignUp = () => {
               <p className='mt-1 text-xs text-gray-400'>
                 PNG, JPG or JPEG (max 2MB)
               </p>
-            </div> */}
+            </div> 
             <div>
               <label htmlFor='email' className='block mb-2 text-sm'>
                 Email address

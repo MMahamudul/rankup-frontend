@@ -1,11 +1,17 @@
 import { createBrowserRouter } from 'react-router'
 import MainLayout from '../layouts/MainLayout'
 import ErrorPage from '../pages/ErrorPage'
-/* import DashboardLayout from '../layouts/DashboardLayout' */
 import PrivateRoute from './PrivateRoute';
 import Login from './../pages/Login/Login';
 import SignUp from './../pages/SignUp/SignUp';
 import Home from '../pages/Home/Home';
+import DashboardLayout from '../layouts/DashboardLayout';
+import AddContest from '../pages/Dashboard/ContestCreator/AddContest';
+import MyContest from '../pages/Dashboard/User/MyContest';
+import Profile from '../components/Shared/Common/Profile';
+import ManageUsers from '../pages/Dashboard/Admin/ManageUser';
+import ManageContest from '../pages/Dashboard/Admin/ManageContest';
+
 
 export const router = createBrowserRouter([
   {
@@ -26,7 +32,7 @@ export const router = createBrowserRouter([
     path: '/dashboard',
     element: (
       <PrivateRoute>
-       
+       <DashboardLayout></DashboardLayout>
       </PrivateRoute>
     ),
     children: [
@@ -39,17 +45,19 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'add-plant',
+        path: 'add-contest',
         element: (
           <PrivateRoute>
+            <AddContest></AddContest>
             
           </PrivateRoute>
         ),
       },
       {
-        path: 'my-inventory',
+        path: 'my-contest',
         element: (
           <PrivateRoute>
+            <MyContest></MyContest>
             
           </PrivateRoute>
         ),
@@ -58,7 +66,15 @@ export const router = createBrowserRouter([
         path: 'manage-users',
         element: (
           <PrivateRoute>
-            
+            <ManageUsers></ManageUsers>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: 'manage-contest',
+        element: (
+          <PrivateRoute>
+            <ManageContest></ManageContest>
           </PrivateRoute>
         ),
       },
@@ -66,18 +82,11 @@ export const router = createBrowserRouter([
         path: 'profile',
         element: (
           <PrivateRoute>
-            
+            <Profile></Profile>
           </PrivateRoute>
         ),
       },
-      {
-        path: 'my-orders',
-        element: (
-          <PrivateRoute>
-            
-          </PrivateRoute>
-        ),
-      },
+    
       {
        
       },

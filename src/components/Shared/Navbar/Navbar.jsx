@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Link, NavLink } from 'react-router'
 import useAuth from '../../../hooks/useAuth'
 import avatarImg from '../../../assets/placeholder.jpg'
-import logo from '../../../assets/logo1.png'
+import logo from '../../../assets/logo-l.png'
 const Navbar = () => {
   const { user, logOut } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
@@ -16,7 +16,7 @@ const Navbar = () => {
           <div className='flex flex-row  items-center justify-between gap-3 md:gap-0'>
             {/* Logo */}
             <Link to='/'>
-              <img src={logo} alt='logo' width='75' height='75' />
+              <img  src={logo} alt='logo' width='125' height='100' />
             </Link>
             <div>
             <NavLink to='/'>Home</NavLink>
