@@ -23,6 +23,10 @@ export const router = createBrowserRouter([
         path: '/',
         element: <Home />,
       },
+      {
+        path: '/contest',
+        element: <Home />,
+      },
      
     ],
   },

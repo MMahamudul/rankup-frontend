@@ -1,9 +1,10 @@
 import React from 'react';
+import AddContestForm from '../../../components/Shared/Form/AddContestForm';
 
 const AddContest = () => {
     return (
         <div>
-            Add Contest
+            <AddContestForm></AddContestForm>
         </div>
     );
 };

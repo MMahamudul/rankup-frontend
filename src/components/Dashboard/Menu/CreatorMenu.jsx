@@ -1,22 +1,27 @@
-import { BsFillHouseAddFill } from 'react-icons/bs'
-import { MdHomeWork, MdOutlineManageHistory } from 'react-icons/md'
-import MenuItem from './MenuItem'
+import { FaCrown } from "react-icons/fa";
+import { MdAddToPhotos, MdOutlineManageHistory } from "react-icons/md";
+import { TbSettingsShare } from "react-icons/tb";
+
+import MenuItem from "./MenuItem";
 const CreatorMenu = () => {
   return (
     <>
       <MenuItem
-        icon={BsFillHouseAddFill}
-        label='Add Contest'
-        address='add-contest'
+        icon={MdAddToPhotos}
+        label="Add Contest"
+        address="add-contest"
       />
-      <MenuItem icon={MdHomeWork} label='My Contest' address='my-contest' />
+      <MenuItem 
+      icon={FaCrown} 
+      label="My Contests" 
+      address="my-contest" />
       <MenuItem
-        icon={MdOutlineManageHistory}
-        label='Manage Contest'
-        address='manage-contest'
+        icon={TbSettingsShare}
+        label="Manage Contest"
+        address="manage-contest"
       />
     </>
-  )
-}
+  );
+};
 
-export default CreatorMenu
+export default CreatorMenu;
