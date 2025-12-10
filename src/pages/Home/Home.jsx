@@ -1,9 +1,12 @@
 import React from 'react';
+import Contests from '../../components/Home/Contests';
+
 
 const Home = () => {
     return (
         <div>
-            I am from Home
+           
+            <Contests></Contests>
         </div>
     );
 };

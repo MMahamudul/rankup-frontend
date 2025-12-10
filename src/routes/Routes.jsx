@@ -11,6 +11,9 @@ import MyContest from '../pages/Dashboard/User/MyContest';
 import Profile from '../components/Shared/Common/Profile';
 import ManageUsers from '../pages/Dashboard/Admin/ManageUser';
 import ManageContest from '../pages/Dashboard/Admin/ManageContest';
+import AllContest from '../pages/AllContest/AllContest';
+import ContestDetails from '../components/ContestDetails/ContestDetails';
+import PaymentSuccess from '../pages/Payment/PaymentSuccess';
 
 
 export const router = createBrowserRouter([
@@ -24,8 +27,16 @@ export const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: '/contest',
-        element: <Home />,
+        path: '/all-contest',
+        element: <AllContest />,
+      },
+      {
+        path: '/contest/:id',
+        element: <ContestDetails />,
+      },
+      {
+        path: '/payment-success',
+        element: <PaymentSuccess />,
       },
      
     ],
