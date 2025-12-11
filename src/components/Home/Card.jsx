@@ -2,19 +2,24 @@ import { Link } from "react-router";
 import { format } from "date-fns";
 
 const Card = ({ contest }) => {
-  const { _id, image, name, price, prize, category, deadline } = contest;
+  const { _id, image, name, price, prize, category, deadline, participant } =
+    contest;
+
+  //  Safe participant count (default to 0 if undefined / null / NaN)
+  const participantCount =
+    typeof participant === "number" && !isNaN(participant) ? participant : 0;
 
   return (
     <Link
       to={`/contest/${_id}`}
-      className="group block rounded-2xl overflow-hidden bg-white shadow-md hover:shadow-2xl transition-all duration-300"
+      className="group block rounded-2xl overflow-hidden bg-white shadow-md hover:shadow-2xl transition-all duration-300 w-[275px]"
     >
       {/* IMAGE SECTION */}
       <div className="relative aspect-square overflow-hidden">
         <img
-          className="object-cover h-full w-full group-hover:scale-110 transition-transform duration-500"
+          className="object-cover h-40 w-full group-hover:scale-110 transition-transform duration-500"
           src={image}
-          alt="Event"
+          alt={name || "Contest"}
         />
 
         {/* CATEGORY BADGE */}
@@ -26,15 +31,13 @@ const Card = ({ contest }) => {
       {/* CONTENT */}
       <div className="p-4 flex flex-col gap-3">
         {/* TITLE */}
-        <h3 className="text-lg font-bold text-gray-900 line-clamp-1">
-          {name}
-        </h3>
+        <h3 className="text-lg font-bold text-gray-900 line-clamp-1">{name}</h3>
 
         {/* DEADLINE */}
         <p className="text-sm text-gray-600 flex items-center gap-1">
-          ⏳ Deadline:
+          Deadline:
           <span className="font-medium text-gray-800">
-            {deadline ? format(new Date(deadline), "MMMM do, yyyy") : "N/A"}
+            {deadline ? format(new Date(deadline), "MM/dd/yy") : "N/A"}
           </span>
         </p>
 
@@ -49,6 +52,18 @@ const Card = ({ contest }) => {
             Prize:
             <span className="text-green-600 ml-1">${prize}</span>
           </div>
+        </div>
+
+        {/* PARTICIPANTS */}
+        <div className="text-sm font-semibold text-gray-700">
+          Participants:
+          {participantCount === 0 ? (
+            <span className="text-gray-500 ml-1">No participants yet</span>
+          ) : (
+            <span className="text-green-600 ml-1">
+              {participantCount} {participantCount === 1 ? "person" : "people"}
+            </span>
+          )}
         </div>
 
         {/* CTA BUTTON */}

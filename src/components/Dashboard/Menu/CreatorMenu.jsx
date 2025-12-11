@@ -1,5 +1,5 @@
 import { FaCrown } from "react-icons/fa";
-import { MdAddToPhotos, MdOutlineManageHistory } from "react-icons/md";
+import { MdAddToPhotos} from "react-icons/md";
 import { TbSettingsShare } from "react-icons/tb";
 
 import MenuItem from "./MenuItem";
@@ -11,14 +11,11 @@ const CreatorMenu = () => {
         label="Add Contest"
         address="add-contest"
       />
-      <MenuItem 
-      icon={FaCrown} 
-      label="My Contests" 
-      address="my-contest" />
+     
       <MenuItem
         icon={TbSettingsShare}
-        label="Manage Contest"
-        address="manage-contest"
+        label="Handle Contests"
+        address="handle-contests"
       />
     </>
   );

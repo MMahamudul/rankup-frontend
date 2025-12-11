@@ -14,6 +14,8 @@ import ManageContest from '../pages/Dashboard/Admin/ManageContest';
 import AllContest from '../pages/AllContest/AllContest';
 import ContestDetails from '../components/ContestDetails/ContestDetails';
 import PaymentSuccess from '../pages/Payment/PaymentSuccess';
+import HandleContests from '../pages/Dashboard/ContestCreator/HandleContest';
+
 
 
 export const router = createBrowserRouter([
@@ -69,7 +71,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'my-contest',
+        path: 'my-contests',
         element: (
           <PrivateRoute>
             <MyContest></MyContest>
@@ -77,6 +79,7 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
+     
       {
         path: 'manage-users',
         element: (
@@ -85,11 +88,21 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
+      //Admin
       {
         path: 'manage-contest',
         element: (
           <PrivateRoute>
             <ManageContest></ManageContest>
+          </PrivateRoute>
+        ),
+      },
+      //Creator
+      {
+        path: 'handle-contests',
+        element: (
+          <PrivateRoute>
+            <HandleContests></HandleContests>
           </PrivateRoute>
         ),
       },

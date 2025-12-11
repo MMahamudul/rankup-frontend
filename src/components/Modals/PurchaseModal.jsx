@@ -71,9 +71,9 @@ const handlePayment = async () => {
             <div className="mt-2">
               <p className="text-sm text-gray-500">Price: $ {price}</p>
             </div>
-            <div className="mt-2">
+            {/* <div className="mt-2">
               <p className="text-sm text-gray-500">Available Quantity: 5</p>
-            </div>
+            </div> */}
             <div className="flex mt-2 justify-around">
               <button
               onClick={handlePayment}
