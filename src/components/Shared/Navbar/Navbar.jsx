@@ -20,7 +20,7 @@ const Navbar = () => {
             </Link>
             <div>
             <NavLink to='/'>Home</NavLink>
-            <NavLink className="mx-6" to='/contests'>Contests</NavLink>
+            <NavLink className="mx-6" to='/all-contests'>Contests</NavLink>
             <NavLink to='/contact'>Contact</NavLink>
             </div>
             {/* Dropdown Menu */}

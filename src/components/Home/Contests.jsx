@@ -1,15 +1,16 @@
 import { useQuery } from '@tanstack/react-query'
 import Container from '../Shared/Container'
-import axios from 'axios'
 import Card from './Card'
+import useAxiosSecure from '../../hooks/useAxiosSecure'
 
 
 
 const Contests= () => {
+  const axiosSecure = useAxiosSecure()
   const {data: contests} = useQuery({
      queryKey: ['contests'], 
      queryFn: async()=>{
-      const result = await axios(`${import.meta.env.VITE_API_URL}/contests`)
+      const result = await axiosSecure(`${import.meta.env.VITE_API_URL}/all-contests`)
       return result.data;
       
       
