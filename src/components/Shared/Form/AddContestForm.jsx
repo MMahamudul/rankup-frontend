@@ -70,8 +70,9 @@ const AddContestForm = () => {
         category,
         price: Number(price),
         prize: Number(prize),
+        status:"pending",
 
-        // IMPORTANT: participant always starts from 0.
+  
         // It will be increased only from payment-success backend.
         participant: 0,
 

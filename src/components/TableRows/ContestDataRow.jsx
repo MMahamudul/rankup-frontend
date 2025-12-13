@@ -5,6 +5,7 @@ import DeleteModal from '../Modals/DeleteModal';
 
 const ContestDataRow = ({program}) => {
   const { image,  name, price, prize, category} = program;
+  
   let [isOpen, setIsOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
 

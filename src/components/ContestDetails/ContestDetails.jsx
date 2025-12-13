@@ -95,7 +95,7 @@ const {image, name, description, creator, price, prize, category} = contest;
           <div className="flex justify-between">
             <p className="font-bold text-3xl text-gray-500">Price: {price}$</p>
             <div>
-              <Button onClick={() => setIsOpen(true)} label="Purchase" />
+              <Button onClick={() => setIsOpen(true)} label="Register" />
             </div>
           </div>
           <hr className="my-6" />

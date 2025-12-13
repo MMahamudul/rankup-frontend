@@ -2,11 +2,12 @@
 import React from 'react';
 import CustomerOrderDataRow from '../../../components/TableRows/CustomerOrderDataRow';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import useAuth from './../../../hooks/useAuth';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
 
 const MyContest = () => {
   const { user } = useAuth();
+  const axiosSecure = useAxiosSecure
 
   const {
     data: orders = [],
@@ -17,8 +18,8 @@ const MyContest = () => {
     queryKey: ['orders', user?.email],
     enabled: !!user?.email, 
     queryFn: async () => {
-      const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/my-contests/${user?.email}`
+      const res = await axiosSecure .get(
+        '/my-contests'
       );
       return res.data; 
     },
