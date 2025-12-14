@@ -1,123 +1,122 @@
-import { createBrowserRouter } from 'react-router'
-import MainLayout from '../layouts/MainLayout'
-import ErrorPage from '../pages/ErrorPage'
-import PrivateRoute from './PrivateRoute';
-import Login from './../pages/Login/Login';
-import SignUp from './../pages/SignUp/SignUp';
-import Home from '../pages/Home/Home';
-import DashboardLayout from '../layouts/DashboardLayout';
-import AddContest from '../pages/Dashboard/ContestCreator/AddContest';
-import MyContest from '../pages/Dashboard/User/MyContest';
-import Profile from '../components/Shared/Common/Profile';
-import ManageUsers from '../pages/Dashboard/Admin/ManageUser';
-import ManageContest from '../pages/Dashboard/Admin/ManageContest';
-import AllContest from '../pages/AllContest/AllContests';
-import ContestDetails from '../components/ContestDetails/ContestDetails';
-import PaymentSuccess from '../pages/Payment/PaymentSuccess';
-import HandleContests from '../pages/Dashboard/ContestCreator/HandleContest';
-
-
+import { createBrowserRouter } from "react-router";
+import MainLayout from "../layouts/MainLayout";
+import ErrorPage from "../pages/ErrorPage";
+import PrivateRoute from "./PrivateRoute";
+import Login from "./../pages/Login/Login";
+import SignUp from "./../pages/SignUp/SignUp";
+import Home from "../pages/Home/Home";
+import DashboardLayout from "../layouts/DashboardLayout";
+import AddContest from "../pages/Dashboard/ContestCreator/AddContest";
+import MyContest from "../pages/Dashboard/User/MyContest";
+import Profile from "../components/Shared/Common/Profile";
+import ManageUsers from "../pages/Dashboard/Admin/ManageUser";
+import ManageContest from "../pages/Dashboard/Admin/ManageContest";
+import AllContest from "../pages/AllContest/AllContests";
+import ContestDetails from "../components/ContestDetails/ContestDetails";
+import PaymentSuccess from "../pages/Payment/PaymentSuccess";
+import HandleContests from "../pages/Dashboard/ContestCreator/HandleContest";
+import CreatorRoute from "./Creatorroute";
+import AdminRoute from "./AdminRoute";
 
 export const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <MainLayout />,
     errorElement: <ErrorPage />,
     children: [
       {
-        path: '/',
+        path: "/",
         element: <Home />,
       },
       {
-        path: '/all-contests',
+        path: "/all-contests",
         element: <AllContest />,
       },
       {
-        path: '/contest/:id',
+        path: "/contest/:id",
         element: <ContestDetails />,
       },
       {
-        path: '/payment-success',
+        path: "/payment-success",
         element: <PaymentSuccess />,
       },
-     
     ],
   },
-  { path: '/login', element: <Login /> },
-  { path: '/signup', element: <SignUp /> },
+  { path: "/login", element: <Login /> },
+  { path: "/signup", element: <SignUp /> },
   {
-    path: '/dashboard',
+    path: "/dashboard",
     element: (
       <PrivateRoute>
-       <DashboardLayout></DashboardLayout>
+        <DashboardLayout></DashboardLayout>
       </PrivateRoute>
     ),
     children: [
       {
         index: true,
+        element: <PrivateRoute></PrivateRoute>,
+      },
+      {
+        path: "add-contest",
         element: (
           <PrivateRoute>
-            
+            <CreatorRoute>
+              <AddContest></AddContest>
+            </CreatorRoute>
           </PrivateRoute>
         ),
       },
       {
-        path: 'add-contest',
-        element: (
-          <PrivateRoute>
-            <AddContest></AddContest>
-            
-          </PrivateRoute>
-        ),
-      },
-      {
-        path: 'my-contests',
+        path: "my-contests",
         element: (
           <PrivateRoute>
             <MyContest></MyContest>
-            
           </PrivateRoute>
         ),
       },
-     
+
       {
-        path: 'manage-users',
+        path: "manage-users",
         element: (
           <PrivateRoute>
-            <ManageUsers></ManageUsers>
+            <AdminRoute>
+              <ManageUsers></ManageUsers>
+            </AdminRoute>
           </PrivateRoute>
         ),
       },
       //Admin
       {
-        path: 'manage-contest',
+        path: "manage-contest",
         element: (
           <PrivateRoute>
-            <ManageContest></ManageContest>
+            <AdminRoute>
+              <ManageContest></ManageContest>
+            </AdminRoute>
           </PrivateRoute>
         ),
       },
       //Creator
       {
-        path: 'handle-contests',
+        path: "handle-contests",
         element: (
           <PrivateRoute>
-            <HandleContests></HandleContests>
+            <CreatorRoute>
+              <HandleContests></HandleContests>
+            </CreatorRoute>
           </PrivateRoute>
         ),
       },
       {
-        path: 'profile',
+        path: "profile",
         element: (
           <PrivateRoute>
             <Profile></Profile>
           </PrivateRoute>
         ),
       },
-    
-      {
-       
-      },
+
+      {},
     ],
   },
-])
+]);
