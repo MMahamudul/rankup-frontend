@@ -17,6 +17,7 @@ import AdminRoute from "./AdminRoute";
 import CreatorRoute from "./CreatorRoute";
 import MyJoinedContests from "../pages/Dashboard/User/MyJoinedContests";
 import ErrorPage from "../pages/ErrorPage";
+import SubmittedTasks from "../pages/Dashboard/ContestCreator/SubmittedTask";
 
 export const router = createBrowserRouter([
   {
@@ -109,6 +110,14 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <MyJoinedContests/>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "submissions/:contestId",
+        element: (
+          <PrivateRoute>
+            <SubmittedTasks/>
           </PrivateRoute>
         ),
       },

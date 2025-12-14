@@ -9,7 +9,7 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
 
-function formatTime(ms) {
+const formatTime = (ms) => {
   if (ms <= 0) return "Contest Ended";
   const s = Math.floor(ms / 1000);
   const d = Math.floor(s / (24 * 3600));
@@ -17,7 +17,7 @@ function formatTime(ms) {
   const m = Math.floor((s % 3600) / 60);
   const sec = s % 60;
   return `${d}d ${h}h ${m}m ${sec}s`;
-}
+};
 
 const ContestDetails = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,10 +26,10 @@ const ContestDetails = () => {
   const { user } = useAuth();
 
   // --- Contest data
-  const { data: contest = {}, isLoading, isError, refetch } = useQuery({
+  const { data: contest = {}, isLoading, isError } = useQuery({
     queryKey: ["contest", id],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/contests/${id}`); // ok even if public
+      const res = await axiosSecure.get(`/contests/${id}`);
       return res.data;
     },
   });
@@ -53,7 +53,11 @@ const ContestDetails = () => {
     typeof participant === "number" && !isNaN(participant) ? participant : 0;
 
   // --- Countdown
-  const deadlineDate = useMemo(() => (deadline ? new Date(deadline) : null), [deadline]);
+  const deadlineDate = useMemo(() => {
+    const d = deadline ? new Date(deadline) : null;
+    return d && !isNaN(d.getTime()) ? d : null;
+  }, [deadline]);
+
   const [timeLeftMs, setTimeLeftMs] = useState(0);
 
   useEffect(() => {
@@ -71,14 +75,16 @@ const ContestDetails = () => {
     queryKey: ["isJoined", id, user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
-      // simplest: reuse your orders endpoint and check contestId exists
       const res = await axiosSecure.get("/my-joined-contests");
       return res.data?.some((o) => o.contestId === id && o.status === "Paid");
     },
   });
 
   // --- Load my submission (if any)
-  const { data: mySubmission = null, refetch: refetchMySubmission } = useQuery({
+  const {
+    data: mySubmission = null,
+    refetch: refetchMySubmission,
+  } = useQuery({
     queryKey: ["mySubmission", id, user?.email],
     enabled: !!user?.email && !!isJoined,
     queryFn: async () => {
@@ -92,13 +98,13 @@ const ContestDetails = () => {
   const [submitLink, setSubmitLink] = useState("");
 
   useEffect(() => {
-    // preload existing submission into inputs
     if (mySubmission) {
       setSubmitText(mySubmission.text || "");
       setSubmitLink(mySubmission.link || "");
     }
   }, [mySubmission]);
 
+  // ✅ Submit mutation (single source of truth)
   const { mutateAsync: submitEntry, isPending: isSubmittingEntry } = useMutation({
     mutationFn: async () => {
       return axiosSecure.post("/submissions", {
@@ -125,6 +131,7 @@ const ContestDetails = () => {
       </Container>
     );
   }
+
   if (isError) {
     return (
       <Container>
@@ -139,11 +146,7 @@ const ContestDetails = () => {
         {/* Banner */}
         <div className="relative overflow-hidden rounded-2xl border bg-white shadow-sm">
           <div className="relative h-[280px] w-full">
-            <img
-              src={image}
-              alt={name}
-              className="h-full w-full object-cover"
-            />
+            <img src={image} alt={name} className="h-full w-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
             <div className="absolute bottom-4 left-4 right-4 flex flex-col gap-2">
               <span className="w-fit rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-gray-800">
@@ -159,10 +162,16 @@ const ContestDetails = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4">
             <div className="rounded-xl border bg-gray-50 p-4">
               <p className="text-xs text-gray-500">Deadline</p>
-              <p className={`mt-1 text-lg font-semibold ${isEnded ? "text-red-600" : "text-gray-900"}`}>
+              <p
+                className={`mt-1 text-lg font-semibold ${
+                  isEnded ? "text-red-600" : "text-gray-900"
+                }`}
+              >
                 {deadlineDate ? formatTime(timeLeftMs) : "N/A"}
               </p>
-              {isEnded && <p className="mt-1 text-xs font-medium text-red-600">Contest Ended</p>}
+              {isEnded && (
+                <p className="mt-1 text-xs font-medium text-red-600">Contest Ended</p>
+              )}
             </div>
 
             <div className="rounded-xl border bg-gray-50 p-4">
@@ -184,7 +193,7 @@ const ContestDetails = () => {
 
         {/* Main layout */}
         <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left: description + task */}
+          {/* Left */}
           <div className="lg:col-span-2 space-y-6">
             <div className="rounded-2xl border bg-white p-6 shadow-sm">
               <Heading title="About this contest" />
@@ -198,7 +207,7 @@ const ContestDetails = () => {
               </p>
             </div>
 
-            {/*  Submission Bar */}
+            {/* Submission Bar */}
             <div className="rounded-2xl border bg-white p-6 shadow-sm">
               <div className="flex items-start justify-between gap-4">
                 <div>
@@ -210,16 +219,13 @@ const ContestDetails = () => {
 
                 {mySubmission && (
                   <span className="rounded-full bg-green-50 px-3 py-1 text-xs font-semibold text-green-700 border border-green-200">
-                    Submitted 
+                    Submitted
                   </span>
                 )}
               </div>
 
-              {/* Access rules */}
               {!user?.email ? (
-                <p className="mt-4 text-sm text-red-600 font-medium">
-                  Please log in to submit.
-                </p>
+                <p className="mt-4 text-sm text-red-600 font-medium">Please log in to submit.</p>
               ) : !isJoined ? (
                 <p className="mt-4 text-sm text-red-600 font-medium">
                   You must register/pay before submitting.
@@ -251,19 +257,19 @@ const ContestDetails = () => {
                       disabled={isSubmittingEntry || (!submitText.trim() && !submitLink.trim())}
                       className="rounded-xl bg-blue-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-blue-800 disabled:opacity-60 disabled:cursor-not-allowed"
                     >
-                      {isSubmittingEntry ? "Submitting..." : mySubmission ? "Update Submission" : "Submit Entry"}
+                      {isSubmittingEntry
+                        ? "Submitting..."
+                        : mySubmission
+                        ? "Update Submission"
+                        : "Submit Entry"}
                     </button>
-
-                    <p className="text-xs text-gray-500">
-                      {/* Tip: You can update anytime before the deadline. */}
-                    </p>
                   </div>
                 </div>
               )}
             </div>
           </div>
 
-          {/* Right: creator + winner + register */}
+          {/* Right */}
           <div className="space-y-6">
             <div className="rounded-2xl border bg-white p-6 shadow-sm">
               <h3 className="text-lg font-semibold text-gray-900">Hosted by</h3>
@@ -293,7 +299,7 @@ const ContestDetails = () => {
                     />
                     <div>
                       <p className="font-semibold text-gray-900">{winner.name}</p>
-                      <p className="text-xs font-medium text-green-700">Declared </p>
+                      <p className="text-xs font-medium text-green-700">Declared</p>
                     </div>
                   </div>
                 ) : (
@@ -311,7 +317,7 @@ const ContestDetails = () => {
               <div className="mt-4">
                 <Button
                   onClick={() => setIsOpen(true)}
-                  label={isEnded ? "Contest Ended" : isJoined ? "Registered" : "Register / Pay"}
+                  label={isEnded ? "Contest Ended" : isJoined ? "Registered" : "Register"}
                   disabled={isEnded || isJoined}
                 />
                 {!isEnded && !isJoined && (
