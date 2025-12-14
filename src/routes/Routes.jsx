@@ -1,6 +1,5 @@
 import { createBrowserRouter } from "react-router";
 import MainLayout from "../layouts/MainLayout";
-import ErrorPage from "../pages/ErrorPage";
 import PrivateRoute from "./PrivateRoute";
 import Login from "./../pages/Login/Login";
 import SignUp from "./../pages/SignUp/SignUp";
@@ -17,12 +16,13 @@ import HandleContests from "../pages/Dashboard/ContestCreator/HandleContest";
 import AdminRoute from "./AdminRoute";
 import CreatorRoute from "./CreatorRoute";
 import MyJoinedContests from "../pages/Dashboard/User/MyJoinedContests";
+import ErrorPage from "../pages/ErrorPage";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
-    errorElement: <ErrorPage />,
+     errorElement: <ErrorPage />,
     children: [
       {
         index: true,

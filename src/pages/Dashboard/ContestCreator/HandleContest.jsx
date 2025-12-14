@@ -1,9 +1,10 @@
-import axios from "axios";
 import ContestDataRow from "../../../components/TableRows/ContestDataRow"
 import useAuth from "../../../hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const HandleContests = () => {
+  const axiosSecure = useAxiosSecure()
   const { user } = useAuth();
 
   const {
@@ -14,7 +15,7 @@ const HandleContests = () => {
     queryKey: ['programs', user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
-      const res = await axios.get(
+      const res = await axiosSecure.get(
         `${import.meta.env.VITE_API_URL}/handle-contests/${user?.email}`
       );
       return res.data;

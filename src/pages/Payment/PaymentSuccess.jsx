@@ -1,9 +1,12 @@
 // PaymentSuccess.jsx
 import { useEffect, useState } from "react";
 import { useLocation, Link } from "react-router"; 
-import axios from "axios";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+
 
 const PaymentSuccess = () => {
+  
+  const axiosSecure = useAxiosSecure();
   const location = useLocation();
   const [status, setStatus] = useState("loading"); 
   const [message, setMessage] = useState("");
@@ -14,7 +17,7 @@ const PaymentSuccess = () => {
 
     const verifyPayment = async () => {
       try {
-        const { data } = await axios.post(
+        const { data } = await axiosSecure.post(
           `${import.meta.env.VITE_API_URL}/payment-success`,
           { session_id: sessionId }
         );
@@ -128,9 +131,11 @@ const PaymentSuccess = () => {
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link
             to="/contests"
-            className="flex-1 inline-flex items-center justify-center px-5 py-3 rounded-xl text-sm font-semibold bg-blue-600 text-white hover:bg-blue-700 transition shadow-md"
+            
+          
+            className="btn flex-1 inline-flex items-center justify-center px-5 py-3 rounded-xl text-sm font-semibold bg-blue-600 text-white hover:bg-blue-700 transition shadow-md"
           >
-            Browse More Contests
+            Task Submission
           </Link>
 
           <Link

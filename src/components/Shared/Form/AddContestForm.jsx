@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -21,10 +21,7 @@ const AddContestForm = () => {
     reset: mutationReset,
   } = useMutation({
     mutationFn: async (payload) =>
-      axiosSecure.post(
-        `${import.meta.env.VITE_API_URL}/add-contest`,
-        payload
-      ),
+      axiosSecure.post(`${import.meta.env.VITE_API_URL}/add-contest`, payload),
     onSuccess: (data) => {
       console.log(data);
       toast.success('Contest added successfully!');
@@ -40,8 +37,26 @@ const AddContestForm = () => {
     handleSubmit,
     reset,
     control,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm();
+
+  // ✅ Image attached UI states
+  const [preview, setPreview] = useState(null);
+  const watchedImage = watch('image'); // FileList
+
+  useEffect(() => {
+    const file = watchedImage?.[0];
+    if (!file) {
+      setPreview(null);
+      return;
+    }
+
+    const objectUrl = URL.createObjectURL(file);
+    setPreview(objectUrl);
+
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [watchedImage]);
 
   const onSubmit = async (data) => {
     const {
@@ -55,13 +70,13 @@ const AddContestForm = () => {
       image,
     } = data;
 
-    const imageFile = image[0];
+    const imageFile = image?.[0];
 
     try {
-      // 1. Upload image
+      // 1) Upload image
       const imageURL = await imageUpload(imageFile);
 
-      // 2. Prepare contest payload
+      // 2) Prepare contest payload
       const contestData = {
         image: imageURL,
         name,
@@ -70,14 +85,14 @@ const AddContestForm = () => {
         category,
         price: Number(price),
         prize: Number(prize),
-        status:"pending",
+        status: 'pending',
 
-  
-        // It will be increased only from payment-success backend.
+        // will be increased after successful payment
         participant: 0,
 
-        // react-datepicker gives a Date object
+        // react-datepicker returns Date object
         deadline: deadline ? deadline.toISOString() : null,
+
         creator: {
           image: user?.photoURL,
           name: user?.displayName,
@@ -85,16 +100,18 @@ const AddContestForm = () => {
         },
       };
 
-      // 3. Send to backend
+      // 3) Send to backend
       await mutateAsync(contestData);
 
-      // 4. Reset form
+      // 4) Reset form + preview
       reset();
+      setPreview(null);
     } catch (err) {
-  console.log(err?.response?.data)
-  toast.error(err?.response?.data?.message || err?.message || 'Server error')
-}
-
+      console.log(err?.response?.data);
+      toast.error(
+        err?.response?.data?.message || err?.message || 'Server error'
+      );
+    }
   };
 
   if (isPending) return <Loading />;
@@ -127,25 +144,17 @@ const AddContestForm = () => {
                 }`}
                 {...register('name', {
                   required: 'Contest name is required',
-                  minLength: {
-                    value: 3,
-                    message: 'Name must be at least 3 characters',
-                  },
+                  minLength: { value: 3, message: 'Name must be at least 3 characters' },
                 })}
               />
               {errors.name && (
-                <p className="text-red-500 text-xs mt-1">
-                  {errors.name.message}
-                </p>
+                <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>
               )}
             </div>
 
             {/* Category */}
             <div className="space-y-1 text-sm">
-              <label
-                htmlFor="category"
-                className="block text-gray-600 font-medium"
-              >
+              <label htmlFor="category" className="block text-gray-600 font-medium">
                 Category <span className="text-red-500">*</span>
               </label>
               <select
@@ -153,31 +162,24 @@ const AddContestForm = () => {
                 className={`w-full px-4 py-3 border rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                   errors.category ? 'border-red-500' : 'border-blue-300'
                 }`}
-                {...register('category', {
-                  required: 'Category is required',
-                })}
+                {...register('category', { required: 'Category is required' })}
               >
                 <option value="">Select a category</option>
                 <option value="Photography">Photography</option>
                 <option value="Coding">Coding</option>
                 <option value="Gaming">Gaming</option>
-                <option value="Performance">Performance</option>
+                <option value="Designing">Designing</option>
                 <option value="Business">Business</option>
-                <option value="Social">Social Media Influence</option>
+                <option value="Writing">Writing</option>
               </select>
               {errors.category && (
-                <p className="text-red-500 text-xs mt-1">
-                  {errors.category.message}
-                </p>
+                <p className="text-red-500 text-xs mt-1">{errors.category.message}</p>
               )}
             </div>
 
             {/* Description */}
             <div className="space-y-1 text-sm">
-              <label
-                htmlFor="description"
-                className="block text-gray-600 font-medium"
-              >
+              <label htmlFor="description" className="block text-gray-600 font-medium">
                 Description <span className="text-red-500">*</span>
               </label>
               <textarea
@@ -188,25 +190,17 @@ const AddContestForm = () => {
                 }`}
                 {...register('description', {
                   required: 'Description is required',
-                  minLength: {
-                    value: 10,
-                    message: 'Description should be at least 10 characters',
-                  },
+                  minLength: { value: 10, message: 'Description should be at least 10 characters' },
                 })}
-              ></textarea>
+              />
               {errors.description && (
-                <p className="text-red-500 text-xs mt-1">
-                  {errors.description.message}
-                </p>
+                <p className="text-red-500 text-xs mt-1">{errors.description.message}</p>
               )}
             </div>
 
             {/* Task Instruction */}
             <div className="space-y-1 text-sm">
-              <label
-                htmlFor="instruction"
-                className="block text-gray-600 font-medium"
-              >
+              <label htmlFor="instruction" className="block text-gray-600 font-medium">
                 Task Instruction <span className="text-red-500">*</span>
               </label>
               <textarea
@@ -217,16 +211,11 @@ const AddContestForm = () => {
                 }`}
                 {...register('instruction', {
                   required: 'Instruction is required',
-                  minLength: {
-                    value: 10,
-                    message: 'Instruction should be at least 10 characters',
-                  },
+                  minLength: { value: 10, message: 'Instruction should be at least 10 characters' },
                 })}
-              ></textarea>
+              />
               {errors.instruction && (
-                <p className="text-red-500 text-xs mt-1">
-                  {errors.instruction.message}
-                </p>
+                <p className="text-red-500 text-xs mt-1">{errors.instruction.message}</p>
               )}
             </div>
           </div>
@@ -237,10 +226,7 @@ const AddContestForm = () => {
             <div className="flex flex-col md:flex-row justify-between gap-3">
               {/* Price */}
               <div className="space-y-1 text-sm w-full">
-                <label
-                  htmlFor="price"
-                  className="block text-gray-600 font-medium"
-                >
+                <label htmlFor="price" className="block text-gray-600 font-medium">
                   Entry Fee <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -252,25 +238,17 @@ const AddContestForm = () => {
                   }`}
                   {...register('price', {
                     required: 'Entry fee is required',
-                    min: {
-                      value: 0,
-                      message: 'Price cannot be negative',
-                    },
+                    min: { value: 0, message: 'Price cannot be negative' },
                   })}
                 />
                 {errors.price && (
-                  <p className="text-red-500 text-xs mt-1">
-                    {errors.price.message}
-                  </p>
+                  <p className="text-red-500 text-xs mt-1">{errors.price.message}</p>
                 )}
               </div>
 
               {/* Prize */}
               <div className="space-y-1 text-sm w-full">
-                <label
-                  htmlFor="prize"
-                  className="block text-gray-600 font-medium"
-                >
+                <label htmlFor="prize" className="block text-gray-600 font-medium">
                   Total Prize <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -282,25 +260,17 @@ const AddContestForm = () => {
                   }`}
                   {...register('prize', {
                     required: 'Prize amount is required',
-                    min: {
-                      value: 0,
-                      message: 'Prize cannot be negative',
-                    },
+                    min: { value: 0, message: 'Prize cannot be negative' },
                   })}
                 />
                 {errors.prize && (
-                  <p className="text-red-500 text-xs mt-1">
-                    {errors.prize.message}
-                  </p>
+                  <p className="text-red-500 text-xs mt-1">{errors.prize.message}</p>
                 )}
               </div>
 
-              {/* Deadline (React DatePicker) */}
+              {/* Deadline */}
               <div className="space-y-1 text-sm w-full">
-                <label
-                  htmlFor="deadline"
-                  className="block text-gray-600 font-medium"
-                >
+                <label htmlFor="deadline" className="block text-gray-600 font-medium">
                   Deadline <span className="text-red-500">*</span>
                 </label>
                 <Controller
@@ -323,37 +293,53 @@ const AddContestForm = () => {
                   )}
                 />
                 {errors.deadline && (
-                  <p className="text-red-500 text-xs mt-1">
-                    {errors.deadline.message}
-                  </p>
+                  <p className="text-red-500 text-xs mt-1">{errors.deadline.message}</p>
                 )}
               </div>
             </div>
 
-            {/* Image Upload */}
+            {/* ✅ Image Upload with attached indicator */}
             <div className="p-4 w-full m-auto rounded-lg grow bg-gray-50 border border-dashed border-gray-300">
-              <div className="file_upload px-5 py-3 relative rounded-lg">
-                <div className="flex flex-col items-center text-center gap-2">
-                  <p className="text-sm text-gray-600 mb-1">
+              <div className="px-5 py-3 relative rounded-lg">
+                <div className="flex flex-col items-center text-center gap-3">
+                  <p className="text-sm text-gray-600">
                     Upload a cover image for your contest
                   </p>
+
+                  {preview && (
+                    <div className="w-full flex items-center gap-3 p-3 bg-white border rounded-lg">
+                      <img
+                        src={preview}
+                        alt="Selected preview"
+                        className="h-12 w-12 rounded object-cover border"
+                      />
+                      <div className="flex-1 text-left">
+                        <p className="text-sm font-medium text-gray-800">
+                          {watchedImage?.[0]?.name}
+                        </p>
+                        <p className="text-xs text-green-600 font-medium">
+                          ✔ Image attached
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
                   <label>
                     <input
                       id="image"
                       type="file"
                       accept="image/*"
-                      className="text-sm cursor-pointer w-36 hidden"
-                      {...register('image', {
-                        required: 'Image is required',
-                      })}
+                      className="hidden"
+                      {...register('image', { required: 'Image is required' })}
                     />
                     <div className="bg-blue-800 text-white border border-gray-300 rounded font-semibold cursor-pointer px-4 py-2 hover:bg-blue-950 transition">
-                      Choose Image
+                      {preview ? 'Change Image' : 'Choose Image'}
                     </div>
                   </label>
                 </div>
               </div>
             </div>
+
             {errors.image && (
               <p className="text-red-500 text-xs mt-1">{errors.image.message}</p>
             )}

@@ -16,7 +16,7 @@ const Navbar = () => {
           <div className='flex flex-row  items-center justify-between gap-3 md:gap-0'>
             {/* Logo */}
             <Link to='/'>
-              <img  src={logo} alt='logo' width='125' height='100' />
+              <img  src={logo} alt='logo' width='75' height='75' />
             </Link>
             <div>
             <NavLink to='/'>Home</NavLink>
@@ -57,7 +57,7 @@ const Navbar = () => {
 
                     {user ? (
                       <>
-                      <h2 className='mt-4 text-orange-400 px-4 py-3 hover:bg-neutral-100 transition font-semibold'>{user.displayName}</h2>
+                      <h2 className='mt-4 text-blue-800 px-4 py-3 hover:bg-neutral-100 transition font-semibold'>{user.displayName}</h2>
                         <Link
                           to='/dashboard'
                           className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'

@@ -5,73 +5,76 @@ const Card = ({ contest }) => {
   const { _id, image, name, price, prize, category, deadline, participant } =
     contest;
 
-  //  Safe participant count (default to 0 if undefined / null / NaN)
   const participantCount =
     typeof participant === "number" && !isNaN(participant) ? participant : 0;
 
   return (
     <Link
       to={`/contest/${_id}`}
-      className="group block rounded-2xl overflow-hidden bg-white shadow-md hover:shadow-2xl transition-all duration-300 w-[275px]"
+      className="
+        group bg-white rounded-xl border border-gray-100
+        hover:border-blue-200 hover:shadow-lg
+        transition-all duration-300
+        flex flex-col overflow-hidden
+      "
     >
-      {/* IMAGE SECTION */}
-      <div className="relative aspect-square overflow-hidden">
+      {/* IMAGE */}
+      <div className="relative h-36 overflow-hidden">
         <img
-          className="object-cover h-40 w-full group-hover:scale-110 transition-transform duration-500"
           src={image}
-          alt={name || "Contest"}
+          alt={name}
+          className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
 
-        {/* CATEGORY BADGE */}
-        <span className="absolute top-3 left-3 px-3 py-1 text-xs font-semibold rounded-full bg-blue-600 text-white shadow">
+        <span className="absolute top-2 left-2 bg-blue-600 text-white text-xs font-semibold px-2 py-0.5 rounded-full">
           {category}
         </span>
       </div>
 
       {/* CONTENT */}
-      <div className="p-4 flex flex-col gap-3">
+      <div className="p-3 flex flex-col gap-2 text-sm">
         {/* TITLE */}
-        <h3 className="text-lg font-bold text-gray-900 line-clamp-1">{name}</h3>
+        <h3 className="font-semibold text-gray-900 line-clamp-1">
+          {name}
+        </h3>
 
         {/* DEADLINE */}
-        <p className="text-sm text-gray-600 flex items-center gap-1">
-          Deadline:
-          <span className="font-medium text-gray-800">
-            {deadline ? format(new Date(deadline), "MM/dd/yy") : "N/A"}
+        <p className="text-gray-500">
+          Deadline:{" "}
+          <span className="text-gray-800 font-medium">
+            {deadline ? format(new Date(deadline), "dd MMM yy") : "N/A"}
           </span>
         </p>
 
-        {/* PRICE & PRIZE */}
-        <div className="flex justify-between items-center mt-2">
-          <div className="text-sm font-semibold text-gray-700">
-            Entry:
-            <span className="text-blue-600 ml-1">${price}</span>
-          </div>
-
-          <div className="text-sm font-semibold text-gray-700">
-            Prize:
-            <span className="text-green-600 ml-1">${prize}</span>
-          </div>
+        {/* PRICE + PRIZE */}
+        <div className="flex justify-between text-gray-700 font-medium">
+          <span>
+            Entry <span className="text-blue-600">${price}</span>
+          </span>
+          <span>
+            Prize <span className="text-green-600">${prize}</span>
+          </span>
         </div>
 
         {/* PARTICIPANTS */}
-        <div className="text-sm font-semibold text-gray-700">
-          Participants:
-          {participantCount === 0 ? (
-            <span className="text-gray-500 ml-1">No participants yet</span>
-          ) : (
-            <span className="text-green-600 ml-1">
-              {participantCount} {participantCount === 1 ? "person" : "people"}
+        <p className="text-gray-600">
+          {participantCount > 0 ? (
+            <span className="text-green-600 font-medium">
+              {participantCount} {participantCount === 1 ? "participant" : "participants"}
             </span>
+          ) : (
+            "No participants yet"
           )}
-        </div>
+        </p>
 
-        {/* CTA BUTTON */}
+        {/* CTA */}
         <button
           className="
-            mt-3 w-full py-2 rounded-lg text-sm font-semibold
-            bg-blue-600 text-white
-            hover:bg-blue-700 transition
+            mt-2 text-sm font-semibold
+            text-blue-600 border border-blue-600
+            rounded-md py-1.5
+            hover:bg-blue-600 hover:text-white
+            transition
           "
         >
           View Contest →
