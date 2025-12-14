@@ -90,10 +90,11 @@ const AddContestForm = () => {
 
       // 4. Reset form
       reset();
-    } catch (error) {
-      console.error(error);
-      toast.error('Something went wrong while creating contest.');
-    }
+    } catch (err) {
+  console.log(err?.response?.data)
+  toast.error(err?.response?.data?.message || err?.message || 'Server error')
+}
+
   };
 
   if (isPending) return <Loading />;

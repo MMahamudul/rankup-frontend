@@ -7,7 +7,6 @@ import SignUp from "./../pages/SignUp/SignUp";
 import Home from "../pages/Home/Home";
 import DashboardLayout from "../layouts/DashboardLayout";
 import AddContest from "../pages/Dashboard/ContestCreator/AddContest";
-import MyContest from "../pages/Dashboard/User/MyContest";
 import Profile from "../components/Shared/Common/Profile";
 import ManageUsers from "../pages/Dashboard/Admin/ManageUser";
 import ManageContest from "../pages/Dashboard/Admin/ManageContest";
@@ -17,6 +16,7 @@ import PaymentSuccess from "../pages/Payment/PaymentSuccess";
 import HandleContests from "../pages/Dashboard/ContestCreator/HandleContest";
 import AdminRoute from "./AdminRoute";
 import CreatorRoute from "./CreatorRoute";
+import MyJoinedContests from "../pages/Dashboard/User/MyJoinedContests";
 
 export const router = createBrowserRouter([
   {
@@ -25,6 +25,7 @@ export const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
+        index: true,
         path: "/",
         element: <Home />,
       },
@@ -60,9 +61,37 @@ export const router = createBrowserRouter([
       </PrivateRoute>
     ),
     children: [
+      // Admin Dashboard Routes
       {
-        index: true,
-        element: <PrivateRoute></PrivateRoute>,
+        path: "manage-users",
+        element: (
+          <PrivateRoute>
+            <AdminRoute>
+              <ManageUsers></ManageUsers>
+            </AdminRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "manage-contest",
+        element: (
+          <PrivateRoute>
+            <AdminRoute>
+              <ManageContest></ManageContest>
+            </AdminRoute>
+          </PrivateRoute>
+        ),
+      },
+      //Creator Dashboard Routes
+      {
+        path: "handle-contests",
+        element: (
+          <PrivateRoute>
+            <CreatorRoute>
+              <HandleContests></HandleContests>
+            </CreatorRoute>
+          </PrivateRoute>
+        ),
       },
       {
         path: "add-contest",
@@ -74,44 +103,12 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
+      //User Dashboard Routes
       {
-        path: "my-contests",
+        path: "my-joined-contests",
         element: (
           <PrivateRoute>
-            <MyContest></MyContest>
-          </PrivateRoute>
-        ),
-      },
-
-      {
-        path: "manage-users",
-        element: (
-          <PrivateRoute>
-            <AdminRoute>
-              <ManageUsers></ManageUsers>
-            </AdminRoute>
-          </PrivateRoute>
-        ),
-      },
-      //Admin
-      {
-        path: "manage-contest",
-        element: (
-          <PrivateRoute>
-            <AdminRoute>
-              <ManageContest></ManageContest>
-            </AdminRoute>
-          </PrivateRoute>
-        ),
-      },
-      //Creator
-      {
-        path: "handle-contests",
-        element: (
-          <PrivateRoute>
-            <CreatorRoute>
-              <HandleContests></HandleContests>
-            </CreatorRoute>
+            <MyJoinedContests/>
           </PrivateRoute>
         ),
       },

@@ -1,13 +1,13 @@
 
 import React from 'react';
-import CustomerOrderDataRow from '../../../components/TableRows/CustomerOrderDataRow';
 import { useQuery } from '@tanstack/react-query';
-import useAuth from './../../../hooks/useAuth';
+import useAuth from '../../../hooks/useAuth';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import UserOrderDataRow from '../../../components/TableRows/UserOrderDataRow';
 
-const MyContest = () => {
+const MyJoinedContests = () => {
   const { user } = useAuth();
-  const axiosSecure = useAxiosSecure
+  const axiosSecure = useAxiosSecure();
 
   const {
     data: orders = [],
@@ -18,13 +18,13 @@ const MyContest = () => {
     queryKey: ['orders', user?.email],
     enabled: !!user?.email, 
     queryFn: async () => {
-      const res = await axiosSecure .get(
-        '/my-contests'
+      const res = await axiosSecure.get(
+        '/my-joined-contests'
       );
       return res.data; 
     },
   });
-
+console.log(orders)
   if (isLoading) {
     return (
       <div className="min-h-[40vh] flex items-center justify-center">
@@ -70,7 +70,7 @@ const MyContest = () => {
                       Deadline
                     </th>
                   <th className="px-5 py-3 bg-white border-b border-gray-200 text-gray-800 text-left text-sm uppercase font-normal">
-                    Status
+                    Payment Status
                   </th>
                   <th className="px-5 py-3 bg-white border-b border-gray-200 text-gray-800 text-left text-sm uppercase font-normal">
                     Action
@@ -89,7 +89,7 @@ const MyContest = () => {
                   </tr>
                 ) : (
                   orders.map((order) => (
-                    <CustomerOrderDataRow
+                    <UserOrderDataRow
                       key={order._id}
                       order={order}
                     />
@@ -104,4 +104,4 @@ const MyContest = () => {
   );
 };
 
-export default MyContest;
+export default MyJoinedContests;

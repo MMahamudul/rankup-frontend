@@ -13,7 +13,8 @@ const UserMenu = () => {
   return (
     <>
       <MenuItem icon={BsFingerprint} label='My Winning Contests' address='winning-contest' />
-      <MenuItem icon={GrUserAdmin} label='My Contests' address='my-contests' />
+      <MenuItem icon={GrUserAdmin} label='My Joined Contests' address='my-joined-contests' />
+      
 
      {/*  <div
         onClick={() => setIsOpen(true)}

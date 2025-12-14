@@ -1,5 +1,5 @@
 
-import {  Links, useNavigate } from "react-router";
+import {   Links, useNavigate } from "react-router";
 
 const ErrorPage = () => {
   const navigate = useNavigate();

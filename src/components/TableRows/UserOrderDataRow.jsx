@@ -3,7 +3,7 @@ import DeleteModal from '../Modals/DeleteModal'
 import { format } from 'date-fns'
 
 
-const CustomerOrderDataRow = ({order}) => {
+const UserOrderDataRow = ({order}) => {
   let [isOpen, setIsOpen] = useState(false)
   const closeModal = () => setIsOpen(false)
   const {image, name, category, status, price, deadline} = order;
@@ -35,7 +35,7 @@ const CustomerOrderDataRow = ({order}) => {
         <p className='text-gray-900'>${price}</p>
       </td>
       <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-        {/* <p className='text-gray-900'>{deadline}</p> */}
+        
         <span className="font-medium text-gray-800">
   {deadline ? format(new Date(deadline), "MM/dd/yyyy") : "N/A"}
 </span>
@@ -59,4 +59,4 @@ const CustomerOrderDataRow = ({order}) => {
   )
 }
 
-export default CustomerOrderDataRow
+export default UserOrderDataRow
