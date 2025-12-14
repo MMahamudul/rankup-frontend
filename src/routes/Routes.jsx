@@ -15,8 +15,8 @@ import AllContest from "../pages/AllContest/AllContests";
 import ContestDetails from "../components/ContestDetails/ContestDetails";
 import PaymentSuccess from "../pages/Payment/PaymentSuccess";
 import HandleContests from "../pages/Dashboard/ContestCreator/HandleContest";
-import CreatorRoute from "./Creatorroute";
 import AdminRoute from "./AdminRoute";
+import CreatorRoute from "./CreatorRoute";
 
 export const router = createBrowserRouter([
   {
@@ -34,11 +34,19 @@ export const router = createBrowserRouter([
       },
       {
         path: "/contest/:id",
-        element: <ContestDetails />,
+        element: (
+          <PrivateRoute>
+            <ContestDetails />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/payment-success",
-        element: <PaymentSuccess />,
+        element: (
+          <PrivateRoute>
+            <PaymentSuccess />
+          </PrivateRoute>
+        ),
       },
     ],
   },
