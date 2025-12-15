@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+
 import {
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
@@ -11,11 +12,13 @@ import {
 } from 'firebase/auth'
 import { app } from '../firebase/firebase.config'
 import { AuthContext } from './AuthContext' 
+import { useQueryClient } from '@tanstack/react-query'
 
 const auth = getAuth(app)
 const googleProvider = new GoogleAuthProvider()
 
 const AuthProvider = ({ children }) => {
+  const queryClient = useQueryClient();
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
@@ -34,10 +37,14 @@ const AuthProvider = ({ children }) => {
     return signInWithPopup(auth, googleProvider)
   }
 
-  const logOut = async () => {
-    setLoading(true)
-    return signOut(auth)
-  }
+const logOut = async () => {
+  setLoading(true);
+  await signOut(auth);
+  queryClient.clear();
+
+  setUser(null);
+  setLoading(false);
+};
 
   const updateUserProfile = (name, photo) => {
     return updateProfile(auth.currentUser, {

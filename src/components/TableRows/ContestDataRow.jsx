@@ -2,49 +2,46 @@ import { useState } from "react";
 import UpdateContestModal from "../Modals/UpdateContestModal";
 import DeleteModal from "../Modals/DeleteModal";
 import { useNavigate } from "react-router";
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 
 const ContestDataRow = ({ program }) => {
   const { _id, image, name, price, category, status } = program;
   const navigate = useNavigate();
-  let [isOpen, setIsOpen] = useState(false);
+
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-  function openModal() {
-    setIsOpen(true);
-  }
-  function closeModal() {
-    setIsOpen(false);
-  }
+  const openDeleteModal = () => setIsDeleteOpen(true);
+  const closeDeleteModal = () => setIsDeleteOpen(false);
 
   return (
     <tr>
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-        <div className="flex items-center">
-          <div className="shrink-0">
-            <div className="block relative">
-              <img
-                alt="profile"
-                src={image}
-                className="mx-auto object-cover rounded h-10 w-15 "
-              />
-            </div>
-          </div>
-        </div>
+        <img
+          alt="contest"
+          src={image}
+          className="mx-auto object-cover rounded h-10 w-15"
+        />
       </td>
+
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-        <p className="text-gray-900 ">{name}</p>
+        <p className="text-gray-900">{name}</p>
       </td>
+
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-        <p className="text-gray-900 ">{category}</p>
+        <p className="text-gray-900">{category}</p>
       </td>
+
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-        <p className="text-gray-900 ">${price}</p>
+        <p className="text-gray-900">${price}</p>
       </td>
+
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-        <p className="text-gray-900 ">{status}</p>
+        <p className="text-gray-900">{status}</p>
       </td>
-       {/* Submissions button */}
-      <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+
+      {/* Submissions */}
+      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
         <button
           onClick={() => navigate(`/dashboard/submissions/${_id}`)}
           className="px-3 py-1 rounded-full text-sm font-semibold bg-blue-100 text-blue-800 hover:bg-blue-200"
@@ -57,14 +54,19 @@ const ContestDataRow = ({ program }) => {
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
         {status === "pending" ? (
           <>
-            <span
-              onClick={openModal}
-              className="relative cursor-pointer inline-block px-3 py-1 font-semibold text-red-900 leading-tight"
+            <button
+              onClick={openDeleteModal}
+              className="inline-flex items-center justify-center text-red-500 hover:text-red-700"
+              title="Delete"
             >
-              <span className="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
-              <span className="relative">Delete</span>
-            </span>
-            <DeleteModal isOpen={isOpen} closeModal={closeModal} />
+              <FaTrashAlt size={18} />
+            </button>
+
+            <DeleteModal
+              isOpen={isDeleteOpen}
+              closeModal={closeDeleteModal}
+              contestId={_id}   // ✅ REQUIRED
+            />
           </>
         ) : (
           <span className="text-gray-400">—</span>
@@ -74,21 +76,24 @@ const ContestDataRow = ({ program }) => {
       {/* Update (only pending) */}
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
         {status === "pending" ? (
-          <span
-            onClick={() => setIsEditModalOpen(true)}
-            className="relative cursor-pointer inline-block px-3 py-1 font-semibold text-green-900 leading-tight"
-          >
-            <span className="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-            <span className="relative">Update</span>
-          </span>
+          <>
+            <button
+              onClick={() => setIsEditModalOpen(true)}
+              className="inline-flex items-center justify-center text-green-500 hover:text-green-700"
+              title="Edit"
+            >
+              <FaEdit size={20} />
+            </button>
+
+            <UpdateContestModal
+              isOpen={isEditModalOpen}
+              setIsEditModalOpen={setIsEditModalOpen}
+              contest={program}
+            />
+          </>
         ) : (
           <span className="text-gray-400">—</span>
         )}
-
-        <UpdateContestModal
-          isOpen={isEditModalOpen}
-          setIsEditModalOpen={setIsEditModalOpen}
-        />
       </td>
     </tr>
   );

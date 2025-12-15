@@ -7,20 +7,20 @@ const HandleContests = () => {
   const axiosSecure = useAxiosSecure()
   const { user } = useAuth();
 
-  const {
-    data: programs = [],
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ['programs', user?.email],
-    enabled: !!user?.email,
-    queryFn: async () => {
-      const res = await axiosSecure.get(
-        `${import.meta.env.VITE_API_URL}/handle-contests/${user?.email}`
-      );
-      return res.data;
-    },
-  });
+ const {
+  data: programs = [],
+  isLoading,
+  isError,
+} = useQuery({
+  queryKey: ["programs", user?.email],
+  enabled: !!user?.email,
+  queryFn: async () => {
+    const res = await axiosSecure.get(
+      `/handle-contests/${user.email}`
+    );
+    return res.data;
+  },
+});
 
   if (isLoading) {
     return (
@@ -37,6 +37,7 @@ const HandleContests = () => {
       </div>
     );
   }
+  
 
   return (
     <>

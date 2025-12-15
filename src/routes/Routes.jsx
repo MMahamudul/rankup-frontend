@@ -19,6 +19,8 @@ import MyJoinedContests from "../pages/Dashboard/User/MyJoinedContests";
 import ErrorPage from "../pages/ErrorPage";
 import SubmittedTasks from "../pages/Dashboard/ContestCreator/SubmittedTask";
 import WinningContests from "../pages/Dashboard/User/WinningContests";
+import UserRoute from "./UserRoute";
+
 
 export const router = createBrowserRouter([
   {
@@ -118,7 +120,9 @@ export const router = createBrowserRouter([
         path: "winning-contest",
         element: (
           <PrivateRoute>
-            <WinningContests/>
+            <UserRoute>
+      <WinningContests />
+    </UserRoute>
           </PrivateRoute>
         ),
       },

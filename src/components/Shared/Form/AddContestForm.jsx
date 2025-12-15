@@ -41,7 +41,7 @@ const AddContestForm = () => {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  // ✅ Image attached UI states
+  //  Image attached UI states
   const [preview, setPreview] = useState(null);
   const watchedImage = watch('image'); // FileList
 

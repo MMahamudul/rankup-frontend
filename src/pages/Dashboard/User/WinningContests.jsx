@@ -1,20 +1,27 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import useAuth from "../../../hooks/useAuth";
 import Loading from "../../../components/Shared/Loading";
-
 
 const WinningContests = () => {
   const axiosSecure = useAxiosSecure();
+  const { user, loading } = useAuth();
 
-  const { data: wins = [], isLoading, isError, error } = useQuery({
-    queryKey: ["myWinningContests"],
+  const {
+    data: wins = [],
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["myWinningContests", user?.email], 
+    enabled: !!user?.email && !loading,           
     queryFn: async () => {
       const res = await axiosSecure.get("/my-winning-contests");
       return res.data;
     },
   });
 
-  if (isLoading) return <Loading />;
+  if (loading || isLoading) return <Loading />;
 
   if (isError) {
     return (
@@ -43,20 +50,27 @@ const WinningContests = () => {
               className="rounded-2xl border bg-white shadow-sm hover:shadow-lg transition overflow-hidden"
             >
               <div className="h-36 w-full overflow-hidden">
-                <img src={c.image} alt={c.name} className="h-full w-full object-cover" />
+                <img
+                  src={c.image}
+                  alt={c.name}
+                  className="h-full w-full object-cover"
+                />
               </div>
 
               <div className="p-5 space-y-2">
-                <p className="text-xs font-semibold text-green-700 bg-green-50 border border-green-200 px-2 py-1 rounded-full w-fit">
-                  Winner Declared 
-                </p>
+                <span className="inline-block text-xs font-semibold text-green-700 bg-green-50 border border-green-200 px-2 py-1 rounded-full">
+                  Winner Declared ✅
+                </span>
 
                 <h3 className="text-lg font-semibold text-gray-900 line-clamp-1">
                   {c.name}
                 </h3>
 
                 <p className="text-sm text-gray-600">
-                  Prize: <span className="font-semibold text-green-700">${c.prize}</span>
+                  Prize:{" "}
+                  <span className="font-semibold text-green-700">
+                    ${c.prize}
+                  </span>
                 </p>
 
                 <div className="flex items-center gap-3 pt-2 border-t mt-3">
@@ -66,8 +80,12 @@ const WinningContests = () => {
                     className="h-10 w-10 rounded-full object-cover border"
                   />
                   <div>
-                    <p className="text-sm font-semibold text-gray-900">{c.winner?.name}</p>
-                    <p className="text-xs text-gray-500">You won this contest </p>
+                    <p className="text-sm font-semibold text-gray-900">
+                      {c.winner?.name}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      You won this contest 
+                    </p>
                   </div>
                 </div>
               </div>
