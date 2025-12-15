@@ -20,18 +20,22 @@ import ErrorPage from "../pages/ErrorPage";
 import SubmittedTasks from "../pages/Dashboard/ContestCreator/SubmittedTask";
 import WinningContests from "../pages/Dashboard/User/WinningContests";
 import UserRoute from "./UserRoute";
-
+import SearchResults from "../pages/SearchResult/SearchResult";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
-     errorElement: <ErrorPage />,
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/search",
+        element: <SearchResults />,
       },
       {
         path: "/all-contests",
@@ -107,12 +111,12 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-      //User Dashboard Routes 
+      //User Dashboard Routes
       {
         path: "my-joined-contests",
         element: (
           <PrivateRoute>
-            <MyJoinedContests/>
+            <MyJoinedContests />
           </PrivateRoute>
         ),
       },
@@ -121,8 +125,8 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <UserRoute>
-      <WinningContests />
-    </UserRoute>
+              <WinningContests />
+            </UserRoute>
           </PrivateRoute>
         ),
       },
@@ -130,7 +134,7 @@ export const router = createBrowserRouter([
         path: "submissions/:contestId",
         element: (
           <PrivateRoute>
-            <SubmittedTasks/>
+            <SubmittedTasks />
           </PrivateRoute>
         ),
       },
