@@ -99,12 +99,12 @@ const ContestDetails = () => {
 
   useEffect(() => {
     if (mySubmission) {
-      setSubmitText(mySubmission.text || "");
-      setSubmitLink(mySubmission.link || "");
+     /*  setSubmitText(mySubmission.text || ""); */
+    /*   setSubmitLink(mySubmission.link || ""); */
     }
   }, [mySubmission]);
 
-  // ✅ Submit mutation (single source of truth)
+  //  Submit mutation (single source of truth)
   const { mutateAsync: submitEntry, isPending: isSubmittingEntry } = useMutation({
     mutationFn: async () => {
       return axiosSecure.post("/submissions", {
@@ -147,7 +147,7 @@ const ContestDetails = () => {
         <div className="relative overflow-hidden rounded-2xl border bg-white shadow-sm">
           <div className="relative h-[280px] w-full">
             <img src={image} alt={name} className="h-full w-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
+            <div className="absolute inset-0 bg-linear-to-t from-black/55 via-black/10 to-transparent" />
             <div className="absolute bottom-4 left-4 right-4 flex flex-col gap-2">
               <span className="w-fit rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-gray-800">
                 {category}
