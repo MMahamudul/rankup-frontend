@@ -34,7 +34,7 @@ const PopularContests = () => {
         <div>
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Popular Contests</h2>
           <p className="text-sm text-gray-500 mt-1">
-            Top contests by participation — join the crowd and compete.
+            Top contests— join the crowd and compete.
           </p>
         </div>
 
@@ -46,7 +46,7 @@ const PopularContests = () => {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {contests.map((c) => (
           <div
             key={c._id}

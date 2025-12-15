@@ -43,7 +43,7 @@ const Banner = () => {
           />
           <button
             type="submit"
-            className="px-6 py-4 bg-blue-700 hover:bg-blue-800 transition text-white"
+            className="px-6 py-6 bg-blue-700 hover:bg-blue-800 transition text-white"
           >
             <FaSearch />
           </button>

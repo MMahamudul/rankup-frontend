@@ -16,7 +16,7 @@ const Navbar = () => {
           <div className='flex flex-row  items-center justify-between gap-3 md:gap-0'>
             {/* Logo */}
             <Link to='/'>
-              <img  src={logo} alt='logo' width='75' height='75' />
+              <img  className="ml-15" src={logo} alt='logo' width='75' height='75' />
             </Link>
             <div>
             <NavLink to='/'>Home</NavLink>
@@ -25,7 +25,7 @@ const Navbar = () => {
             </div>
             {/* Dropdown Menu */}
             <div className='relative'>
-              <div className='flex flex-row items-center gap-3'>
+              <div className='flex flex-row items-center gap-3 mr-17'>
                 {/* Dropdown btn */}
                 <div
                   onClick={() => setIsOpen(!isOpen)}
