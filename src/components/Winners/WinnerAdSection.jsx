@@ -31,7 +31,7 @@ const WinnerAdSection = () => {
   const { recentWinners = [], stats = {} } = data;
 
   return (
-    <section className="relative overflow-hidden bg-linear-to-b from-purple-900 to-purple-600 py-20 text-white mt-6 -mb-16">
+    <section className="relative overflow-hidden bg-linear-to-b from-blue-900 to-purple-900 py-20 text-white mt-6 -mb-16">
       <div className="max-w-7xl mx-auto px-4">
         {/* Header */}
         <motion.div

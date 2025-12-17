@@ -5,17 +5,28 @@ import { Link, NavLink } from 'react-router'
 import useAuth from '../../../hooks/useAuth'
 import avatarImg from '../../../assets/placeholder.jpg'
 import logo from '../../../assets/logo-l.png'
+import { useEffect } from 'react'
 
 const Navbar = () => {
   const { user, logOut } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
+  const closeMenu = () => setIsOpen(false)
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+  useEffect(() => {
+    const html = document.querySelector("html");
+    html.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  const toogleTheme = (checked) => {
+    setTheme(checked ? "dark" : "light");
+  };
 
   return (
-    <div className='fixed top-0 w-full bg-white z-10 shadow-sm'>
+    <div className='fixed top-0 w-full bg-white z-50 shadow-sm'>
       <Container>
         <div className='h-16 flex items-center justify-between gap-3'>
-         
-          <Link to='/'>
+          <Link to='/' onClick={closeMenu}>
             <img src={logo} alt='logo' width='75' height='75' />
           </Link>
 
@@ -44,28 +55,48 @@ const Navbar = () => {
             </NavLink>
 
             <NavLink
-              to='/contact'
+              to='/support'
               className={({ isActive }) =>
                 `text-sm font-medium transition ${
                   isActive ? 'text-blue-700' : 'text-gray-700 hover:text-gray-900'
                 }`
               }
             >
-              Contact
+              Support
+            </NavLink>
+
+            <NavLink
+              to='/membership'
+              className={({ isActive }) =>
+                `text-sm font-medium transition ${
+                  isActive ? 'text-blue-700' : 'text-gray-700 hover:text-gray-900'
+                }`
+              }
+            >
+              Membership
+            </NavLink>
+
+            <NavLink
+              to='/leaderboard'
+              className={({ isActive }) =>
+                `text-sm font-medium transition ${
+                  isActive ? 'text-blue-700' : 'text-gray-700 hover:text-gray-900'
+                }`
+              }
+            >
+              Leaderboard
             </NavLink>
           </div>
 
-          {/* Dropdown Menu (works for both desktop + mobile) */}
+          {/* Dropdown Menu Button (same behavior as before) */}
           <div className='relative'>
             <div className='flex items-center'>
-              {/* Dropdown btn */}
               <div
                 onClick={() => setIsOpen(!isOpen)}
                 className='p-2 md:py-1 md:px-2 border border-neutral-200 flex items-center gap-3 rounded-full cursor-pointer hover:shadow-md transition'
               >
                 <AiOutlineMenu />
                 <div className='hidden md:block'>
-                  {/* Avatar */}
                   <img
                     className='rounded-full w-8 h-8 object-cover'
                     referrerPolicy='no-referrer'
@@ -79,28 +110,26 @@ const Navbar = () => {
             {isOpen && (
               <div className='absolute right-0 top-12 rounded-xl shadow-md w-64 md:w-56 bg-white overflow-hidden text-sm border'>
                 <div className='flex flex-col'>
-                  {/* Mobile Nav Links (only show on mobile) */}
+                  {/* Mobile nav links (only show on mobile) */}
                   <div className='md:hidden border-b'>
-                    <Link
-                      to='/'
-                      className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'
-                    >
+                    <Link onClick={closeMenu} to='/' className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'>
                       Home
                     </Link>
-                    <Link
-                      to='/all-contests'
-                      className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'
-                    >
+                    <Link onClick={closeMenu} to='/all-contests' className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'>
                       Contests
                     </Link>
-                    <Link
-                      to='/contact'
-                      className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'
-                    >
-                      Contact
+                    <Link onClick={closeMenu} to='/support' className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'>
+                      Support
+                    </Link>
+                    <Link onClick={closeMenu} to='/membership' className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'>
+                      Membership
+                    </Link>
+                    <Link onClick={closeMenu} to='/leaderboard' className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'>
+                      Leaderboard
                     </Link>
                   </div>
 
+                  {/* Auth menu (same as your current functionality) */}
                   {user ? (
                     <>
                       <h2 className='px-4 py-3 text-blue-800 font-semibold border-b truncate'>
@@ -108,6 +137,7 @@ const Navbar = () => {
                       </h2>
 
                       <Link
+                        onClick={closeMenu}
                         to='/dashboard'
                         className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'
                       >
@@ -115,7 +145,10 @@ const Navbar = () => {
                       </Link>
 
                       <div
-                        onClick={logOut}
+                        onClick={() => {
+                          logOut()
+                          closeMenu()
+                        }}
                         className='px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer'
                       >
                         Logout
@@ -123,16 +156,10 @@ const Navbar = () => {
                     </>
                   ) : (
                     <>
-                      <Link
-                        to='/login'
-                        className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'
-                      >
+                      <Link onClick={closeMenu} to='/login' className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'>
                         Login
                       </Link>
-                      <Link
-                        to='/signup'
-                        className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'
-                      >
+                      <Link onClick={closeMenu} to='/signup' className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'>
                         Sign Up
                       </Link>
                     </>
@@ -141,6 +168,14 @@ const Navbar = () => {
               </div>
             )}
           </div>
+           <div>
+          <input
+            onChange={(e) => toogleTheme(e.target.checked)}
+            type="checkbox"
+            defaultChecked={localStorage.getItem("theme") === "dark"}
+            className="toggle"
+          />
+        </div>
         </div>
       </Container>
     </div>

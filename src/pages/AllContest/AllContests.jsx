@@ -5,8 +5,7 @@ import Container from "../../components/Shared/Container";
 const AllContests = () => {
   return (
     <Container>
-        
-      <Contests></Contests>
+        <Contests></Contests>
     </Container>
   );
 };

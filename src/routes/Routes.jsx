@@ -21,6 +21,9 @@ import SubmittedTasks from "../pages/Dashboard/ContestCreator/SubmittedTask";
 import WinningContests from "../pages/Dashboard/User/WinningContests";
 import UserRoute from "./UserRoute";
 import SearchResults from "../pages/SearchResult/SearchResult";
+import Support from "../pages/Support/Support";
+import Membership from "../pages/Membership/Membership";
+import Leaderboard from "../pages/Leaderboard/Leaderboard";
 
 export const router = createBrowserRouter([
   {
@@ -49,6 +52,19 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
+      {
+        path: "/support",
+        element: <Support />,
+      },
+      {
+        path: "/membership",
+        element: <Membership />,
+      },
+      {
+        path: "/leaderboard",
+        element: <Leaderboard />,
+      },
+      
       {
         path: "/payment-success",
         element: (
