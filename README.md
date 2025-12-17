@@ -5,7 +5,7 @@ RankUp is a modern, role-based contest management platform where creators host c
 ---
 
 ##  Live Website
- https://Rankup.web.app  
+ https://rankup-7cd7e.web.app  
 
 
 ---
