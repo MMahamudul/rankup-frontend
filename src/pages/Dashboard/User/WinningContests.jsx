@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAuth from "../../../hooks/useAuth";
 import Loading from "../../../components/Shared/Loading";
+import { GiChampions } from "react-icons/gi";
 
 const WinningContests = () => {
   const axiosSecure = useAxiosSecure();
@@ -33,8 +34,10 @@ const WinningContests = () => {
 
   return (
     <div className="container mx-auto px-4 sm:px-8 py-8">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">🏆 My Winning Contests</h2>
+      <div className="flex items-center justify-between  mb-6">
+        <div className="flex items-center justify-between gap-4">
+          <span className="text-3xl font-bold text-blue-900"><GiChampions size={35}/></span><h2 className="text-3xl font-bold text-blue-900"> My Winning Contests</h2>
+        </div>
         <span className="text-sm text-gray-500">{wins.length} wins</span>
       </div>
 
@@ -59,7 +62,7 @@ const WinningContests = () => {
 
               <div className="p-5 space-y-2">
                 <span className="inline-block text-xs font-semibold text-green-700 bg-green-50 border border-green-200 px-2 py-1 rounded-full">
-                  Winner Declared ✅
+                  Winner Declared 
                 </span>
 
                 <h3 className="text-lg font-semibold text-gray-900 line-clamp-1">

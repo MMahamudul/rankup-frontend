@@ -1,12 +1,14 @@
-import React from 'react';
-import Contests from '../../components/Home/Contests';
+import React from "react";
+import Contests from "../../components/Home/Contests";
+import Container from "../../components/Shared/Container";
 
 const AllContests = () => {
-    return (
-        <div>
-            <Contests></Contests>
-        </div>
-    );
+  return (
+    <Container>
+        
+      <Contests></Contests>
+    </Container>
+  );
 };
 
 export default AllContests;

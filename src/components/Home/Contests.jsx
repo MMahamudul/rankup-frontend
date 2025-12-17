@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query'
-import Container from '../Shared/Container'
 import Card from './Card'
 import useAxiosSecure from '../../hooks/useAxiosSecure'
 
@@ -18,7 +17,8 @@ const Contests= () => {
   })
  
   return (
-    <Container>
+    <div>
+      <h1 className="text-blue-900 text-3xl text-center font-bold">All Contests</h1>
       {
         contests && contests.length > 0 ? (
           <div className='pt-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-8'>
@@ -28,7 +28,7 @@ const Contests= () => {
       </div>
         ): null
       }
-    </Container>
+    </div>
   )
 }
 

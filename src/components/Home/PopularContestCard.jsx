@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router";
 import useAuth from "../../hooks/useAuth";
+import { SlPeople } from "react-icons/sl";
 
 
 const PopularContestCard = ({ contest }) => {
@@ -55,7 +56,9 @@ const PopularContestCard = ({ contest }) => {
 
         {/* INFO */}
         <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
-          <span>👥 {participant || 0} Joined</span>
+          <div className="flex items-center gap-2 text-blue-950">
+            <SlPeople size={20} className="text-blue-800 font-bold "/> <span>{participant || 0} Joined</span>
+          </div>
           {price && <span> $ {price}</span>}
         </div>
 

@@ -10,12 +10,13 @@ const Banner = () => {
     e.preventDefault();
     if (!query.trim()) return;
 
-    // go to search results page
+    
     navigate(`/search?query=${encodeURIComponent(query)}`);
   };
 
   return (
-    <section className="relative bg-linear-to-r from-blue-900 via-indigo-800 to-purple-900">
+    <section className="relative -mt-16 bg-linear-to-b from-blue-900 to-blue-700">
+
       {/* Overlay */}
       <div className="absolute inset-0 bg-black/40" />
 

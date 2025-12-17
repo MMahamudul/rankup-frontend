@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import { format } from "date-fns";
+import { SlPeople, SlUser } from "react-icons/sl";
 
 const Card = ({ contest }) => {
   const { _id, image, name, price, prize, category, deadline, participant } =
@@ -52,20 +53,26 @@ const Card = ({ contest }) => {
             Entry <span className="text-blue-600">${price}</span>
           </span>
           <span>
-            Prize <span className="text-green-600">${prize}</span>
+            Prize <span className="text-blue-600">${prize}</span>
           </span>
         </div>
 
         {/* PARTICIPANTS */}
-        <p className="text-gray-600">
-          {participantCount > 0 ? (
-            <span className="text-green-600 font-medium">
-              {participantCount} {participantCount === 1 ? "participant" : "participants"}
-            </span>
-          ) : (
-            "No participants yet"
-          )}
-        </p>
+        <p className="text-gray-600 flex items-center gap-2">
+  {participantCount > 0 ? (
+    <span className="flex items-center gap-1 text-blue-800 font-medium">
+      {participantCount === 1 ? (
+        <SlUser className="text-blue-800 text-lg" />
+      ) : (
+        <SlPeople className="text-blue-800 text-lg" />
+      )}
+      {participantCount}{" "}
+      {participantCount === 1 ? "participant" : "participants"}
+    </span>
+  ) : (
+    <span className="text-gray-400">No participants yet</span>
+  )}
+</p>
 
         {/* CTA */}
         <button
