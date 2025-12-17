@@ -2,11 +2,13 @@
 import { FaFacebookF, FaLinkedinIn, FaHeart } from "react-icons/fa";
 import { Link } from "react-router";
 import logo from '../../../assets/logo-l.png'
+import Container from "../Container";
 
 const Footer = () => {
   return (
-    <footer className=" bg-white">
-      <div className="max-w-7xl mx-auto px-4 py-10">
+    <Container>
+      <footer className=" bg-white">
+      <div className="max-w-8xl mx-auto px-4 py-10">
         <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
           {/* Brand */}
           <div className="flex items-center ">
@@ -62,6 +64,7 @@ const Footer = () => {
         </div>
       </div>
     </footer>
+    </Container>
   );
 };
 

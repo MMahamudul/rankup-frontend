@@ -298,7 +298,7 @@ const AddContestForm = () => {
               </div>
             </div>
 
-            {/* ✅ Image Upload with attached indicator */}
+            {/*  Image Upload with attached indicator */}
             <div className="p-4 w-full m-auto rounded-lg grow bg-gray-50 border border-dashed border-gray-300">
               <div className="px-5 py-3 relative rounded-lg">
                 <div className="flex flex-col items-center text-center gap-3">

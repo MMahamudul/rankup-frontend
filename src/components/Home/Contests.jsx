@@ -6,8 +6,8 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 const CONTEST_TYPES = [
   "All",
   "Photography",
-  "Image Design",
-  "Article Writing",
+  "Designing",
+  "Writing",
   "Coding",
   "Gaming",
   "Business",
@@ -41,7 +41,7 @@ const Contests = () => {
   }
 
   return (
-    <section className="max-w-7xl mx-auto py-1">
+    <section className="max-w-8xl mx-auto py-1">
       {/* TITLE */}
       <h1 className="text-blue-900 text-3xl font-bold text-center mb-4">
         All Contests
