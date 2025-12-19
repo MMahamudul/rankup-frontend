@@ -1,15 +1,15 @@
 // PaymentSuccess.jsx
 import { useEffect, useState } from "react";
-import { useLocation, Link } from "react-router"; 
+import { useLocation, Link } from "react-router";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 
-
 const PaymentSuccess = () => {
-  
   const axiosSecure = useAxiosSecure();
   const location = useLocation();
-  const [status, setStatus] = useState("loading"); 
+
+  const [status, setStatus] = useState("loading");
   const [message, setMessage] = useState("");
+  const [contestId, setContestId] = useState(null); 
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -25,6 +25,7 @@ const PaymentSuccess = () => {
         if (data.success) {
           setStatus("success");
           setMessage("Payment verified and your spot in the contest is secured!");
+          setContestId(data.contestId); 
         } else {
           setStatus("error");
           setMessage(data.message || "Payment verification failed.");
@@ -34,9 +35,7 @@ const PaymentSuccess = () => {
         const apiMessage = err.response?.data?.message;
 
         setStatus("error");
-        setMessage(
-          apiMessage || "Something went wrong verifying your payment."
-        );
+        setMessage(apiMessage || "Something went wrong verifying your payment.");
       }
     };
 
@@ -46,14 +45,14 @@ const PaymentSuccess = () => {
       /* setStatus("error");
       setMessage("No payment session found. Please return to the contest page."); */
     }
-  }, [location.search]);
+  }, [location.search, axiosSecure]);
 
   const isLoading = status === "loading";
   const isSuccess = status === "success";
   const isError = status === "error";
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center bg-gradient-to-b from-blue-50 to-white px-4">
+    <div className="min-h-[80vh] flex items-center justify-center bg-linear-to-b from-blue-50 to-white px-4">
       <div className="bg-white shadow-2xl rounded-3xl p-10 max-w-lg w-full text-center border border-blue-50">
         {/* ICON */}
         <div className="flex justify-center mb-4">
@@ -123,16 +122,15 @@ const PaymentSuccess = () => {
         {/* EXTRA INFO ON SUCCESS */}
         {isSuccess && (
           <p className="text-sm text-gray-500 mb-6">
-            You will receive a confirmation email shortly with your contest details.
+            You can now return to the contest page and submit your entry.
           </p>
         )}
 
         {/* ACTION BUTTONS */}
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          {/* Go back to contest details page (task submission is there) */}
           <Link
-            to="/contests"
-            
-          
+            to={contestId ? `/contest/${contestId}` : "/all-contests"}
             className="btn flex-1 inline-flex items-center justify-center px-5 py-3 rounded-xl text-sm font-semibold bg-blue-600 text-white hover:bg-blue-700 transition shadow-md"
           >
             Task Submission

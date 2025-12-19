@@ -3,7 +3,7 @@ import Heading from "../../components/Shared/Heading";
 import Button from "../../components/Shared/Button/Button";
 import { useEffect, useMemo, useState } from "react";
 import PurchaseModal from "./../Modals/PurchaseModal";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
@@ -24,6 +24,7 @@ const ContestDetails = () => {
   const { id } = useParams();
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
+  const navigate= useNavigate();
 
   // --- Contest data
   const { data: contest = {}, isLoading, isError } = useQuery({
@@ -218,7 +219,7 @@ const ContestDetails = () => {
                 </div>
 
                 {mySubmission && (
-                  <span className="rounded-full bg-green-50 px-3 py-1 text-xs font-semibold text-green-700 border border-green-200">
+                  <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700 border border-blue-200">
                     Submitted
                   </span>
                 )}
@@ -264,6 +265,12 @@ const ContestDetails = () => {
                         : "Submit Entry"}
                     </button>
                   </div>
+                  <div className=" mx-auto max-w-1/4">
+                <Button
+                  label="See All Contests"
+                  onClick={() => navigate("/all-contests")}
+                />
+              </div>
                 </div>
               )}
             </div>
